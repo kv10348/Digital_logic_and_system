@@ -1,0 +1,51 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    22:46:48 11/10/2019 
+-- Design Name: 
+-- Module Name:    vhd4 - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+package MY IS 
+PROCEDURE SQ(SIGNAL Xcur,Ycur,Xpos,Ypos: IN integer;
+signal RGB: out std_logic_vector(3 downto 0);
+signal DRAW: out std_logic);
+END MY;
+
+PACKAGE BODY MY IS 
+PROCEDURE SQ(SIGNAL Xcur, Ycur, Xpos, Ypos: IN integer;
+signal RGB:out std_logic_vector(3 downto 0);
+signal DRAW: out std_logic) IS
+begin
+ if(Xcur>Xpos AND xcur<(Xpos+250) and Ycur>Ypos and Ycur<(Ypos+100))then
+ RGB<="1111";
+ DRAW<='1';
+ ELSE
+ DRAW<='0';
+ end if;
+ END SQ;
+ END MY;
+	
+

@@ -1,0 +1,179 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: 
+-- 
+-- Create Date:    21:41:51 11/10/2019 
+-- Design Name: 
+-- Module Name:    vhd2 - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+use IEEE.NUMERIC_STD.ALL;
+USE work.MY.all;
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity SYNC is
+port(
+clk:in std_logic ;
+HSYNC, VSYNC: out std_logic;
+R,G,B: out std_logic_vector(3 downto 0);
+KEYS: IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+S:IN STD_LOGIC_VECTOR(2 DOWNTO 0)
+
+);
+
+end SYNC;
+
+architecture Behavioral of SYNC is
+SIGNAL RGB :STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL DRAW1,DRAW2,DRAW3: STD_LOGIC;
+SIGNAL SQ_X1 :INTEGER RANGE 0 TO 800:=200;
+SIGNAL SQ_X2:INTEGER RANGE 0 TO 800:=200;
+SIGNAL SQ_X3:INTEGER RANGE 0 TO 800:=200;
+SIGNAL  SQ_Y1:INTEGER RANGE 0 TO 800:=200;
+SIGNAL SQ_Y2:INTEGER RANGE 0 TO 800:=300;
+SIGNAL SQ_Y3:INTEGER RANGE 0 TO 800:=400;
+signal HPOS: integer range 0 to 800:=0;
+signal VPOS: integer range 0 to 521:=0;
+begin
+SQ(HPOS, VPOS, SQ_X1,SQ_Y1,RGB,DRAW1);
+SQ(HPOS, VPOS, SQ_X2,SQ_Y2,RGB,DRAW2);
+SQ(HPOS, VPOS, SQ_X3,SQ_Y3,RGB,DRAW3);
+process(clk)
+begin
+if(clk'event and clk='1') then
+	IF(DRAW1='1') THEN 
+		
+			R<=(OTHERS=>'1');
+			G<=(OTHERS=>'0');
+			B<=(OTHERS=>'0');
+		
+	END IF;
+	IF(DRAW2='1') THEN 
+		
+			R<=(OTHERS=>'1');
+			G<=(OTHERS=>'1');
+			B<=(OTHERS=>'1');
+		
+	END IF;
+		IF(DRAW3='1') THEN 
+               
+                    R<=(OTHERS=>'0');
+                    G<=(OTHERS=>'1');
+                    B<=(OTHERS=>'0');
+             
+            END IF;
+      
+	
+	IF(DRAW2='0' AND DRAW1='0' AND DRAW3='0') THEN 
+	
+			R<=(OTHERS=>'0');
+			G<=(OTHERS=>'0');
+			B<=(OTHERS=>'0');
+		
+	END IF;	
+
+
+
+
+
+
+
+	if(HPOS<800) then 
+	HPOS<=HPOS+1;
+	else
+	HPOS<=0;
+		if(VPOS<521) then 
+		VPOS<=VPOS+1;
+		ELSE 
+		  
+				SQ_X1<=SQ_X1+5;
+				
+			IF(KEYS(1)='1')THEN 
+				SQ_X1<=SQ_X1-5;
+				END IF;
+			IF(KEYS(2)='1')THEN 
+				SQ_Y1<=SQ_Y1+5;
+				END IF;
+			IF(KEYS(3)='1')THEN 
+				SQ_Y1<=SQ_Y1-5;
+				END IF;
+	
+		
+		 
+				SQ_X2<=SQ_X2+5;
+		
+			IF(KEYS(1)='1')THEN 
+				SQ_X2<=SQ_X2-5;
+				END IF;
+			IF(KEYS(2)='1')THEN 
+				SQ_Y2<=SQ_Y2+5;
+				END IF;
+			IF(KEYS(3)='1')THEN 
+				SQ_Y2<=SQ_Y2-5;
+				END IF;
+	
+		
+              
+                       SQ_X3<=SQ_X3+5;
+                    IF(KEYS(1)='1')THEN 
+                       SQ_X3<=SQ_X3-5;
+                       END IF;
+                   IF(KEYS(2)='1')THEN 
+                       SQ_Y3<=SQ_Y3+5;
+                       END IF;
+                   IF(KEYS(3)='1')THEN 
+                       SQ_Y3<=SQ_Y3-5;
+                       END IF;
+               
+		 
+		 
+		 
+		VPOS<=0;
+		END IF;
+	END IF;
+	IF( HPOS<128) THEN
+		HSYNC<='0';
+		ELSE
+		HSYNC<='1';
+	END IF;
+	IF(VPOS<2) THEN
+		VSYNC<='0';
+		ELSE 
+		VSYNC<='1';
+	END IF;
+	IF((HPOS>0 AND HPOS<160) OR (VPOS>0 AND VPOS<43)) THEN
+		R<=(OTHERS=>'0');
+		G<=(OTHERS=>'0');
+		B<=(OTHERS=>'0');
+	END IF;
+	END IF;
+	
+
+
+
+
+
+end process;
+
+
+end Behavioral;
+
+
